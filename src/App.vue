@@ -1,30 +1,24 @@
 <template>
-    <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
+    <div class="ibrewer">
+        <h1 class="ibrewer__header">IBrewer</h1>
+        <nav class="ibrewer__navs">
+            <router-link class="ibrewer__nav" to="/">Home</router-link>
+            <router-link class="ibrewer__nav" to="/calcs">Calculators</router-link>
+        </nav>
+
+        <router-view></router-view>
     </div>
-    <router-view />
 </template>
 
-<style lang="scss">
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-}
-
-#nav {
-    padding: 30px;
-
-    a {
-        font-weight: bold;
-        color: #2c3e50;
-
-        &.router-link-exact-active {
-            color: #42b983;
+<style lang="scss" scoped>
+    .ibrewer {
+        &__navs {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        &__nav:not(:last-child) {
+            margin-right: 1rem;
         }
     }
-}
 </style>
