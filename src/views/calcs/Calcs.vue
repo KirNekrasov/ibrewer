@@ -1,16 +1,17 @@
 <template>
     <div class="ibrewer-calcs">
-        <p>You can find different calculators here.</p>
+        <h2>Calculators</h2>
 
-        <h2>Cider calculator</h2>
-        <Cider />
+        <nav class="ibrewer__navs">
+            <router-link class="ibrewer__nav" :to="{ name: 'cider' }">
+                Cider
+            </router-link>
+        </nav>
+
+        <router-view></router-view>
     </div>
 </template>
 
 <script lang="ts">
-import Cider from './Cider';
-
-export default {
-    components: { Cider },
-};
+export default {};
 </script>

@@ -6,18 +6,25 @@ export function platoToSg(plato: number) {
     return 1 + plato / (258.6 - (plato / 258.2) * 227.1);
 }
 
-export function abv(og: number, fg: number) {
-    return ((76.08 * (og - fg)) / (1.775 - og)) * (fg / 0.794);
+export function abv(ogSg: number, fgSg: number) {
+    return ((76.08 * (ogSg - fgSg)) / (1.775 - ogSg)) * (fgSg / 0.794);
 }
 
-export function fgFromAbv(og: number, abv: number) {
+export function fgFromOgAbv(ogSg: number, abv: number) {
     const [root1, root2] = roots(
         76.08,
-        -76.08 * og,
-        0.794 * abv * (1.775 - og)
+        -76.08 * ogSg,
+        0.794 * abv * (1.775 - ogSg)
     );
 
-    return sgToPlato(Math.max(root1, root2));
+    return Math.max(root1, root2);
+}
+
+export function ogFromFgAbv(fgSg: number, abv: number) {
+    return (
+        (76.08 * fgSg * fgSg + 1.775 * 0.794 * abv) /
+        (76.08 * fgSg + 0.794 * abv)
+    );
 }
 
 export function roots(a: number, b: number, c: number) {
@@ -27,3 +34,7 @@ export function roots(a: number, b: number, c: number) {
 }
 
 export const NULL_FG = 1.002;
+
+export const FRUCTOSE_DENSITY = 1.69;
+
+export const FRUIT_ACID_DENSITY = 1.65;
