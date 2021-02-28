@@ -33,8 +33,24 @@ export function roots(a: number, b: number, c: number) {
     return [(-b + Math.sqrt(d)) / (2 * a), (b + Math.sqrt(d)) / (2 * a)];
 }
 
+export function pHFruits(moles: number) {
+    return (1 / 2) * FRUIT_ACID_PKA - (1 / 2) * Math.log10(moles);
+}
+
 export const NULL_FG = 1.002;
 
 export const FRUCTOSE_DENSITY = 1.69;
 
-export const FRUIT_ACID_DENSITY = 1.65;
+export const FRUIT_ACID_DENSITY = 1.6;
+
+export const FRUIT_ACID_G_MOL = 134.09;
+
+export const FRUIT_ACID_PKA = 3.51;
+
+export const CO2_G_MOL = 44.01;
+
+export const CO2_GRAMMS_PER_LITER_OPTIMAL = 5;
+
+export const ETHANOL_DENSITY = 0.78945;
+
+export const ETHANOL_G_MOL = 46.069;

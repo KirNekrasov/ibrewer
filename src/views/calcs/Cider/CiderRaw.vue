@@ -45,7 +45,7 @@ export default {
         const volume = ref(40);
         const abv = ref(11);
         const fg = ref(2);
-        const acidsGrammsPerLitre = ref(6);
+        const acidsGrammsPerLitre = ref(0.5);
         const juiceSugarsMassPercents = ref(70);
         const juiceAcidsMassPercents = ref(2.8);
 
