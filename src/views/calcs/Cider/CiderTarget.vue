@@ -34,7 +34,7 @@
     <p>OG, {{ og.toFixed(1) }} °P</p>
     <p>Mass, {{ massBeforeFermentationKg.toFixed(1) }} kg</p>
 
-    <h5>After Fermentation</h5>
+    <h5>Before Carbonization</h5>
 
     <p>FG, {{ fgBeforeCarbon.toFixed(1) }} °P</p>
     <p>ABV, {{ abvBeforeCarbon.toFixed(1) }}%</p>
@@ -68,12 +68,12 @@ import {
 
 export default {
     setup() {
-        const juiceMassKg = ref(10);
+        const juiceMassKg = ref(5);
         const juiceSugarsMassPercents = ref(70);
         const juiceAcidsMassPercents = ref(2.8);
-        const additionalWaterVolume = ref(32);
+        const additionalWaterVolume = ref(25);
         const yeastMaxAbv = ref(11);
-        const fructoseMassKg = ref(2);
+        const fructoseMassKg = ref(3.5);
 
         const juiceSugarsMassKg = computed(
             () => (juiceMassKg.value * juiceSugarsMassPercents.value) / 100
