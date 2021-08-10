@@ -37,7 +37,7 @@ export function pHFruits(moles: number) {
     return (1 / 2) * FRUIT_ACID_PKA - (1 / 2) * Math.log10(moles);
 }
 
-export const NULL_FG = 1.002;
+export const DRY_FG = 0.995;
 
 export const FRUCTOSE_DENSITY = 1.69;
 

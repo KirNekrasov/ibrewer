@@ -24,7 +24,9 @@
     <p>Juice, {{ juiceMass.toFixed(1) }} kg</p>
     <p>Fructose, {{ fructoseMass.toFixed(1) }}kg</p>
     <p>Water, {{ waterVolume.toFixed(1) }} L</p>
-    <p v-if="hasYeastMaxAbv">WARNING! Yeast max ABV should be {{ abv.toFixed(1) }}% for sweet cider.</p>
+    <p v-if="hasYeastMaxAbv">
+        WARNING! Yeast max ABV should be {{ abv.toFixed(1) }}% for sweet cider.
+    </p>
 </template>
 
 <script lang="ts">
@@ -34,10 +36,9 @@ import {
     platoToSg,
     ogFromFgAbv,
     sgToPlato,
-    fgFromOgAbv,
     FRUCTOSE_DENSITY,
     FRUIT_ACID_DENSITY,
-    NULL_FG,
+    DRY_FG,
 } from '@/utils';
 
 export default {
@@ -104,7 +105,7 @@ export default {
             () => volume.value - juiceVolume.value - fructoseVolume.value
         );
 
-        const hasYeastMaxAbv = computed(() => NULL_FG < platoToSg(fg.value));
+        const hasYeastMaxAbv = computed(() => DRY_FG < platoToSg(fg.value));
 
         return {
             volume,

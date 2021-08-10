@@ -23,16 +23,15 @@
         <input type="number" v-model.number="fructoseMassKg" />
     </form>
 
-    <p>Volume, {{ volume.toFixed(1) }} L</p>
-
     <h5>Initial</h5>
 
-    <p>Acids, {{ acidsGrammsPerLitre.toFixed(1) }} g/L</p>
-    <p>Acids, {{ acidsPercents.toFixed(2) }}%</p>
-    <p>Acids, {{ acidsMoles.toFixed(2) }} mol</p>
-    <p>pH, {{ pH.toFixed(1) }}</p>
+    <p>Acids, {{ acidsGrammsPerLitreBeforeFermentation.toFixed(1) }} g/L</p>
+    <p>Acids, {{ acidsPercentsBeforeFermentation.toFixed(2) }}%</p>
+    <p>Acids, {{ acidsMolesBeforeFermentation.toFixed(2) }} mol</p>
+    <p>pH, {{ pHBeforeFermentation.toFixed(1) }} (???)</p>
     <p>OG, {{ og.toFixed(1) }} °P</p>
     <p>Mass, {{ massBeforeFermentationKg.toFixed(1) }} kg</p>
+    <p>Volume, {{ volumeBeforeFermentation.toFixed(1) }} L</p>
 
     <h5>Before Carbonization</h5>
 
@@ -53,7 +52,7 @@ import { computed, ref } from 'vue';
 import {
     platoToSg,
     abv,
-    NULL_FG,
+    DRY_FG,
     fgFromOgAbv,
     FRUCTOSE_DENSITY,
     FRUIT_ACID_DENSITY,
@@ -68,12 +67,12 @@ import {
 
 export default {
     setup() {
-        const juiceMassKg = ref(5);
+        const juiceMassKg = ref(10);
         const juiceSugarsMassPercents = ref(70);
         const juiceAcidsMassPercents = ref(2.8);
-        const additionalWaterVolume = ref(25);
+        const additionalWaterVolume = ref(40);
         const yeastMaxAbv = ref(11);
-        const fructoseMassKg = ref(3.5);
+        const fructoseMassKg = ref(4);
 
         const juiceSugarsMassKg = computed(
             () => (juiceMassKg.value * juiceSugarsMassPercents.value) / 100
@@ -112,27 +111,30 @@ export default {
                 additionalWaterVolume.value
         );
 
-        const volume = computed(
+        const volumeBeforeFermentation = computed(
             () =>
                 juiceVolume.value +
                 fructoseMassKg.value / FRUCTOSE_DENSITY +
                 additionalWaterVolume.value
         );
 
-        const acidsGrammsPerLitre = computed(
-            () => (juiceAcidsMassKg.value * 1000) / volume.value
+        const acidsGrammsPerLitreBeforeFermentation = computed(
+            () =>
+                (juiceAcidsMassKg.value * 1000) / volumeBeforeFermentation.value
         );
 
-        const acidsMoles = computed(
-            () => acidsGrammsPerLitre.value / FRUIT_ACID_G_MOL
+        const acidsMolesBeforeFermentation = computed(
+            () => acidsGrammsPerLitreBeforeFermentation.value / FRUIT_ACID_G_MOL
         );
 
-        const acidsPercents = computed(
+        const acidsPercentsBeforeFermentation = computed(
             () =>
                 (juiceAcidsMassKg.value / massBeforeFermentationKg.value) * 100
         );
 
-        const pH = computed(() => pHFruits(acidsMoles.value));
+        const pHBeforeFermentation = computed(() =>
+            pHFruits(acidsMolesBeforeFermentation.value)
+        );
 
         const og = computed(
             () =>
@@ -142,15 +144,15 @@ export default {
         );
 
         const abvFinal = computed(() =>
-            Math.min(abv(platoToSg(og.value), NULL_FG), yeastMaxAbv.value)
+            Math.min(abv(platoToSg(og.value), DRY_FG), yeastMaxAbv.value)
         );
 
         const co2CarbonMassGramms = computed(
-            () => CO2_GRAMMS_PER_LITER_OPTIMAL * volume.value
+            () => CO2_GRAMMS_PER_LITER_OPTIMAL * volumeBeforeFermentation.value
         );
 
         const alcoholTotalVolume = computed(
-            () => abvFinal.value * volume.value / 100
+            () => (abvFinal.value * volumeBeforeFermentation.value) / 100
         );
 
         const abvBeforeCarbon = computed(() => {
@@ -164,7 +166,10 @@ export default {
             const alcoholBeforeCarbonVolume =
                 alcoholTotalVolume.value - alcoholCarbonVolume;
 
-            return (alcoholBeforeCarbonVolume / volume.value) * 100;
+            return (
+                (alcoholBeforeCarbonVolume / volumeBeforeFermentation.value) *
+                100
+            );
         });
 
         const fgBeforeCarbon = computed(() =>
@@ -173,7 +178,8 @@ export default {
 
         const massFinal = computed(() => {
             const alcoholTotalMoles =
-                (alcoholTotalVolume.value * ETHANOL_DENSITY * 1000) / ETHANOL_G_MOL;
+                (alcoholTotalVolume.value * ETHANOL_DENSITY * 1000) /
+                ETHANOL_G_MOL;
             const co2TotalMoles = alcoholTotalMoles;
             const co2TotalMassKg = (co2TotalMoles * CO2_G_MOL) / 1000;
 
@@ -196,14 +202,13 @@ export default {
             yeastMaxAbv,
             fructoseMassKg,
 
-            volume,
-
-            acidsGrammsPerLitre,
-            acidsMoles,
-            acidsPercents,
-            pH,
+            acidsGrammsPerLitreBeforeFermentation,
+            acidsMolesBeforeFermentation,
+            acidsPercentsBeforeFermentation,
+            pHBeforeFermentation,
             og,
             massBeforeFermentationKg,
+            volumeBeforeFermentation,
 
             fgBeforeCarbon,
             abvBeforeCarbon,
