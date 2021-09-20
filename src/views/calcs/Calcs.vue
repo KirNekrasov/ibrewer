@@ -3,6 +3,10 @@
         <h2>Calculators</h2>
 
         <nav class="ibrewer__navs">
+            <router-link class="ibrewer__nav" :to="{ name: 'beer' }">
+                Beer
+            </router-link>
+
             <router-link class="ibrewer__nav" :to="{ name: 'cider' }">
                 Cider
             </router-link>

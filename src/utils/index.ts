@@ -10,6 +10,14 @@ export function abv(ogSg: number, fgSg: number) {
     return ((76.08 * (ogSg - fgSg)) / (1.775 - ogSg)) * (fgSg / 0.794);
 }
 
+export function ogPlato(sugarsKg: number, totalKg: number) {
+    return (sugarsKg / totalKg) * 100;
+}
+
+export function sugarsKgFromOgPlato(ogPlato: number, totalKg: number) {
+    return (ogPlato * totalKg) / 100;
+}
+
 export function fgFromOgAbv(ogSg: number, abv: number) {
     const [root1, root2] = roots(
         76.08,
@@ -37,6 +45,8 @@ export function pHFruits(moles: number) {
     return (1 / 2) * FRUIT_ACID_PKA - (1 / 2) * Math.log10(moles);
 }
 
+export const densityFromOgSgKgL = (ogSg: number) => ogSg * WATER_DENSITY_KG_L;
+
 export const DRY_FG = 0.995;
 
 export const FRUCTOSE_DENSITY = 1.69;
@@ -54,3 +64,5 @@ export const CO2_GRAMMS_PER_LITER_OPTIMAL = 5;
 export const ETHANOL_DENSITY = 0.78945;
 
 export const ETHANOL_G_MOL = 46.069;
+
+export const WATER_DENSITY_KG_L = 0.998;
